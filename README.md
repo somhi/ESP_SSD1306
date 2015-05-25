@@ -5,7 +5,7 @@ This ESP_SSD1306 library is a copy of the Adafruit_SSD1306 library with some mod
 
 This library works in conjunction with the default's Adafruit_GFX library, but it's needed to do a little modification.
 
-For the Adafruit_GFX library to work with the ESP8266, please be sure to insert the line "#elif defined ESP8266" in the Adafruit_GFX.cpp file
+For the Adafruit_GFX library to work with the ESP8266, please be sure to insert the line "#elif defined ESP8266" in the Adafruit_GFX.cpp file.
 Otherwise comment the line   //#define pgm_read_byte(addr)...
 
 Code in Adafruit_GFX.cpp should look like this:
