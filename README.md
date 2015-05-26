@@ -3,9 +3,11 @@ SSD1306 display library for the ESP8266 board (modified from Adafruit_SSD1306)
 
 This ESP_SSD1306 library is a copy of the Adafruit_SSD1306 library with some modifications in order to work with the ESP8266 board.
 
-This library works in conjunction with the default's Adafruit_GFX library, but it's needed to do a little modification.
+This library is intended to be used with the Arduino IDE from https://github.com/esp8266/arduino which supports ESP8266 boards.
 
-For the Adafruit_GFX library to work with the ESP8266, please be sure to insert the line "#elif defined ESP8266" in the Adafruit_GFX.cpp file.
+Place the ESP_SSD1306 library folder to your /libraries/ folder. You may need to create the libraries subfolder if its your first library. Restart the IDE.
+
+This library works in conjunction with the default's Adafruit_GFX library, but it's needed to do a little modification: for the Adafruit_GFX library to work with the ESP8266, please be sure to insert the line "#elif defined ESP8266" in the Adafruit_GFX.cpp file.
 Otherwise comment the line   //#define pgm_read_byte(addr)...
 
 Code in Adafruit_GFX.cpp should look like this:
