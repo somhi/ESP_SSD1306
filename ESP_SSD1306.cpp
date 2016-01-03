@@ -553,6 +553,7 @@ void ESP_SSD1306::display(void) {
       }
       i--;
       Wire.endTransmission();
+      yield();
     }
 #ifndef __SAM3X8E__
 //    TWBR = twbrbackup;					//commented for ESP8266 compatibility
