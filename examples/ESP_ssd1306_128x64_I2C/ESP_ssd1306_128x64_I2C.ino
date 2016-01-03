@@ -1,9 +1,9 @@
 /*
- ****** ESP_ssd1306_128x64_SPI demo display *********
+ ****** ESP_ssd1306_128x64_I2C demo display *********
  *
  * Demo for using ESP_SSD1306 library to communicate
  * a ssd1306 Display with the ESP8266 board
- * through hardware SPI communication
+ * through hardware I2C communication
  *
  *********** This code is for the ESP8266***********
  *
