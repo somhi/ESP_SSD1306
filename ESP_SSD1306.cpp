@@ -379,6 +379,7 @@ void ESP_SSD1306::ssd1306_command(uint8_t c) {
     WIRE_WRITE(control);
     WIRE_WRITE(c);
     Wire.endTransmission();
+    yield();
   }
 }
 
