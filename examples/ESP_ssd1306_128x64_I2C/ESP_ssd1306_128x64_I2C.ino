@@ -129,7 +129,7 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS); // FOR SPI
+ESP_SSD1306 display(OLED_RESET); // FOR I2C
 
 
 void setup(void)
