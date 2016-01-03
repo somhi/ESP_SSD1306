@@ -2,14 +2,14 @@
  ****** ESP_ssd1306_128x64_SPI demo display *********
  *
  * Demo for using ESP_SSD1306 library to communicate
- * a ssd1306 Display with the ESP8266 board 
+ * a ssd1306 Display with the ESP8266 board
  * through hardware SPI communication
  *
  *********** This code is for the ESP8266***********
- *  
+ *
  * This is an example for Monochrome OLEDs based on SSD1306 drivers
  *
- * This examples uses the ESP_SSD1306 library which is a copy of the default's Adafruit_SSD1306  
+ * This examples uses the ESP_SSD1306 library which is a copy of the default's Adafruit_SSD1306
  * library with some modifications in order to work in the ESP8266 board.
  * This library works in conjunction with the default's Adafruit_GFX library,  but it's needed
  * to do a little modification in that library in order to work (See README.txt file)
@@ -26,7 +26,7 @@
 Pin 16,   GPIO12   MISO (DIN)
 Pin 17,   GPIO14   CLOCK          - D0 pin OLED display
 Pin 18,   GPIO13   MOSI (DOUT)    - D1 pin OLED display
-Pin 19,   GPIO15   CS / SS        - 
+Pin 19,   GPIO15   CS / SS        -
 */
 
 // Pin definitions
@@ -40,8 +40,8 @@ Pin 19,   GPIO15   CS / SS        -
 #define XPOS 0
 #define YPOS 1
 #define DELTAY 2
-#define LOGO16_GLCD_HEIGHT 16 
-#define LOGO16_GLCD_WIDTH  16 
+#define LOGO16_GLCD_HEIGHT 16
+#define LOGO16_GLCD_WIDTH  16
 
 static const unsigned char PROGMEM logo16_glcd_bmp[] = {
   B00000000, B11000000,
@@ -129,14 +129,15 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS);
+ESP_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS); // FOR SPI
+//ESP_SSD1306 display(OLED_RESET); // FOR I2C
 
- 
+
 void setup(void)
-{ 
+{
 	// Start Serial
 	Serial.begin(115200);
-	 
+    
   // SSD1306 Init
   display.begin(SSD1306_SWITCHCAPVCC);  // Switch OLED
 
@@ -153,7 +154,7 @@ void setup(void)
   display.display();
   delay(2000);
   display.clearDisplay();
-  
+
   // draw a single pixel
   display.drawPixel(10, 10, WHITE);
   // Show the display buffer on the hardware.
@@ -174,7 +175,7 @@ void setup(void)
   display.display();
   delay(2000);
   display.clearDisplay();
-  
+
   // draw multiple rectangles
   testfillrect();
   display.display();
@@ -204,11 +205,11 @@ void setup(void)
   testdrawtriangle();
   delay(2000);
   display.clearDisplay();
-   
+
   testfilltriangle();
   delay(2000);
   display.clearDisplay();
-  
+
   // draw the first ~12 characters in the font
   testdrawchar();
   display.display();
@@ -219,7 +220,7 @@ void setup(void)
   testscrolltext();
   delay(2000);
   display.clearDisplay();
-  
+
   // text display tests
   display.setTextSize(1);
   display.setTextColor(WHITE);
@@ -238,12 +239,12 @@ void setup(void)
   display.drawBitmap(30, 16,  logo16_glcd_bmp, 16, 16, 1);
   display.display();
   delay(2000);
-  
+
   // invert the display
   display.invertDisplay(true);
-  delay(1000); 
+  delay(1000);
   display.invertDisplay(false);
-  delay(1000); 
+  delay(1000);
 
   // Fill screen
   display.clearDisplay();
@@ -254,25 +255,25 @@ void setup(void)
 
   // draw a bitmap icon and 'animate' movement
   testdrawbitmap(logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
-  
+
 }
 
- 
+
 void loop() {
-  
+
 }
 
 
 
 void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
   uint8_t icons[NUMFLAKES][3];
- 
+
   // initialize
   for (uint8_t f=0; f< NUMFLAKES; f++) {
     icons[f][XPOS] = random(display.width());
     icons[f][YPOS] = 0;
     icons[f][DELTAY] = random(5) + 1;
-    
+
     Serial.print("x: ");
     Serial.print(icons[f][XPOS], DEC);
     Serial.print(" y: ");
@@ -288,7 +289,7 @@ void testdrawbitmap(const uint8_t *bitmap, uint8_t w, uint8_t h) {
     }
     display.display();
     delay(200);
-    
+
     // then erase it + move it
     for (uint8_t f=0; f< NUMFLAKES; f++) {
       display.drawBitmap(icons[f][XPOS], icons[f][YPOS],  logo16_glcd_bmp, w, h, BLACK);
@@ -315,7 +316,7 @@ void testdrawchar(void) {
     display.write(i);
     if ((i > 0) && (i % 21 == 0))
       display.println();
-  }    
+  }
   display.display();
 }
 
@@ -381,7 +382,7 @@ void testdrawrect(void) {
   }
 }
 
-void testdrawline() {  
+void testdrawline() {
   for (int16_t i=0; i<display.width(); i+=4) {
     display.drawLine(0, 0, i, display.height()-1, WHITE);
     display.display();
@@ -391,7 +392,7 @@ void testdrawline() {
     display.display();
   }
   delay(250);
-  
+
   display.clearDisplay();
   for (int16_t i=0; i<display.width(); i+=4) {
     display.drawLine(0, display.height()-1, i, 0, WHITE);
@@ -402,7 +403,7 @@ void testdrawline() {
     display.display();
   }
   delay(250);
-  
+
   display.clearDisplay();
   for (int16_t i=display.width()-1; i>=0; i-=4) {
     display.drawLine(display.width()-1, display.height()-1, i, 0, WHITE);
@@ -420,7 +421,7 @@ void testdrawline() {
     display.display();
   }
   for (int16_t i=0; i<display.width(); i+=4) {
-    display.drawLine(display.width()-1, 0, i, display.height()-1, WHITE); 
+    display.drawLine(display.width()-1, 0, i, display.height()-1, WHITE);
     display.display();
   }
   delay(250);
@@ -433,7 +434,7 @@ void testscrolltext(void) {
   display.clearDisplay();
   display.println("scroll");
   display.display();
- 
+
   display.startscrollright(0x00, 0x0F);
   delay(2000);
   display.stopscroll();
@@ -441,7 +442,7 @@ void testscrolltext(void) {
   display.startscrollleft(0x00, 0x0F);
   delay(2000);
   display.stopscroll();
-  delay(1000);    
+  delay(1000);
   display.startscrolldiagright(0x00, 0x07);
   delay(2000);
   display.startscrolldiagleft(0x00, 0x07);
