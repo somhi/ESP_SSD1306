@@ -250,6 +250,7 @@ void setup(void)
   display.fillScreen(WHITE);
   display.display();
   delay(2000);
+  display.clearDisplay();
 
   // draw a bitmap icon and 'animate' movement
   testdrawbitmap(logo16_glcd_bmp, LOGO16_GLCD_HEIGHT, LOGO16_GLCD_WIDTH);
