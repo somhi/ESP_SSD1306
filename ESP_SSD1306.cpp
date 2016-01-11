@@ -117,6 +117,7 @@ static uint8_t buffer[SSD1306_LCDHEIGHT * SSD1306_LCDWIDTH / 8] = {
 #endif
 };
 
+#define swap(a, b) { int16_t t = a; a = b; b = t; }
 
 
 // the most basic function, set a single pixel
