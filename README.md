@@ -1,5 +1,5 @@
 # ESP_SSD1306
-SSD1306 display library for the ESP8266 board (modified from Adafruit_SSD1306)
+SSD1306 display library for the ESP8266 board (modified from Adafruit_SSD1306 https://github.com/adafruit/Adafruit_SSD1306)
 
 This ESP_SSD1306 library is a copy of the Adafruit_SSD1306 library with some modifications in order to work with the ESP8266 board.
 
