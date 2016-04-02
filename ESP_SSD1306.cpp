@@ -151,7 +151,9 @@ void ESP_SSD1306::drawPixel(int16_t x, int16_t y, uint16_t color) {
     
 }
 
-ESP_SSD1306::ESP_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+//constructor for SPI display , SPI value false dosnt have sance
+ESP_SSD1306::ESP_SSD1306(bool SPI, int8_t SID, int8_t SCLK, int8_t DC, int8_t CS, int8_t RST) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  spi = true;
   cs = CS;
   rst = RST;
   dc = DC;
@@ -160,28 +162,58 @@ ESP_SSD1306::ESP_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t 
   hwSPI = false;
 }
 
-// constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset 
-ESP_SSD1306::ESP_SSD1306(int8_t DC, int8_t RST, int8_t CS) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
-  dc = DC;
-  rst = RST;
-  cs = CS;
-  hwSPI = true;
+// constructor for hardware SPI - we indicate DataCommand, ChipSelect, Reset, or I2C with reset pin
+// if SPI false DC is  SDA, CS is SCL and RST is reset pin 
+ESP_SSD1306::ESP_SSD1306(bool SPI, int8_t DC,int8_t CS,int8_t RST) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  spi = SPI;
+  if(spi){
+    dc = DC;
+    rst = RST;
+    cs = CS;
+    hwSPI = true;
+    sda = scl = -1;
+  } else {
+    sclk = dc = cs = sid = -1;
+    sda = DC;
+    scl = CS;
+    rst = RST;  
+  }
 }
 
 // initializer for I2C - we only indicate the reset pin!
-ESP_SSD1306::ESP_SSD1306(int8_t reset) :
-Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
-  sclk = dc = cs = sid = -1;
-  rst = reset;
+// SPI value of true dosnt have sance
+ESP_SSD1306::ESP_SSD1306(bool SPI, int8_t SDA, int8_t SCL) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  spi = false;
+  rst = sclk = dc = cs = sid = -1;
+  sda = SDA;
+  scl = SCL;
 }
 
+// initializer for I2C - we only indicate the reset pin!
+// SPI value of true dosnt have sance
+ESP_SSD1306::ESP_SSD1306(bool SPI, int8_t RST) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  spi = false;
+  sclk = dc = cs = sid = -1;
+  rst = RST;
+  sda = 4;
+  scl = 5;
+}
 
-void ESP_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
+// initializer for I2C - we only indicate the reset pin!
+// SPI value of true dosnt have sance
+ESP_SSD1306::ESP_SSD1306(bool SPI) : Adafruit_GFX(SSD1306_LCDWIDTH, SSD1306_LCDHEIGHT) {
+  spi = false;
+  rst = sclk = dc = cs = sid = -1;
+  sda = 4;
+  scl = 5;
+}
+
+void ESP_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr) {
   _vccstate = vccstate;
   _i2caddr = i2caddr;
 
   // set pin directions
-  if (sid != -1){
+  if (spi){
     pinMode(dc, OUTPUT);
     pinMode(cs, OUTPUT);
 //commented for ESP8266 compatibility
@@ -215,7 +247,7 @@ void ESP_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
  else
   {
     // I2C Init
-    Wire.begin();
+    Wire.begin(sda,scl);
 #ifdef __SAM3X8E__
     // Force 400 KHz I2C, rawr! (Uses pins 20, 21 for SDA, SCL)
     TWI1->TWI_CWGR = 0;
@@ -223,7 +255,7 @@ void ESP_SSD1306::begin(uint8_t vccstate, uint8_t i2caddr, bool reset) {
 #endif
   }
 
-  if (reset) {
+  if (rst != -1) {
     // Setup reset pin direction (used by both SPI and I2C)  
     pinMode(rst, OUTPUT);
     digitalWrite(rst, HIGH);
@@ -359,7 +391,7 @@ void ESP_SSD1306::invertDisplay(uint8_t i) {
 }
 
 void ESP_SSD1306::ssd1306_command(uint8_t c) { 
-  if (sid != -1)
+  if (spi)
   {
     // SPI
     digitalWrite(cs, HIGH);		//uncommented for ESP8266 compatibility
@@ -474,7 +506,7 @@ void ESP_SSD1306::dim(boolean dim) {
 }
 
 void ESP_SSD1306::ssd1306_data(uint8_t c) {
-  if (sid != -1)
+  if (spi)
   {
     // SPI
     digitalWrite(cs, HIGH);		//uncommented for ESP8266 compatibility
@@ -515,7 +547,7 @@ void ESP_SSD1306::display(void) {
     ssd1306_command(1); // Page end address
   #endif
 
-  if (sid != -1)
+  if (spi)
   {
 	// SPI
     digitalWrite(cs, HIGH);		//added for ESP8266 compatibility

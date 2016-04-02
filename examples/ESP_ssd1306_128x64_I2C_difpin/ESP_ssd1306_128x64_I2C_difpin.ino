@@ -26,10 +26,6 @@ Pin 17,   GPIO14   SCL
 Pin 19,   GPIO15   SDA
 */
 
-// Pin definitions
-#define OLED_RESET  16  // Pin 15 -RESET digital signal
-
-
 // Display demo definitions
 #define NUMFLAKES 10
 #define XPOS 0
@@ -124,13 +120,13 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(false,OLED_RESET); // FOR I2C
+ESP_SSD1306 display(false,4,5); // FOR I2C
 
 
 void setup(void)
 {
-	// Start Serial
-	Serial.begin(115200);
+  // Start Serial
+  Serial.begin(115200);
 
   // SSD1306 Init
   display.begin(SSD1306_SWITCHCAPVCC);  // Switch OLED
@@ -443,3 +439,4 @@ void testscrolltext(void) {
   delay(2000);
   display.stopscroll();
 }
+

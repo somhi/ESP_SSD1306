@@ -20,7 +20,6 @@
 #include <ESP_SSD1306.h>    // Modification of Adafruit_SSD1306 for ESP8266 compatibility
 #include <Adafruit_GFX.h>   // Needs a little change in original Adafruit library (See README.txt file)
 #include <SPI.h>            // For SPI comm (needed for not getting compile error)
-#include <Wire.h>           // For I2C comm, but needed for not getting compile error
 
 /*HardWare Olimex ESP8266 SPI pins
 Pin 16,   GPIO12   MISO (DIN)
@@ -129,7 +128,7 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(OLED_DC, OLED_RESET, OLED_CS); // FOR SPI
+ESP_SSD1306 display(true, OLED_DC, OLED_RESET, OLED_CS); // FOR SPI
 
 
 void setup(void)
