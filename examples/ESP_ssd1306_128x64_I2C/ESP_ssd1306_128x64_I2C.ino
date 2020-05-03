@@ -12,8 +12,8 @@
  * This examples uses the ESP_SSD1306 library which is a copy of the default's Adafruit_SSD1306
  * library with some modifications in order to work in the ESP8266 board.
  * This library works in conjunction with the default's Adafruit_GFX library,  but it's needed
- * to do a little modification in that library in order to work (See README.txt file)
- *
+ * to do a little modification in that library in order to work (According to 
+ * https://github.com/somhi/ESP_SSD1306/issues/4 this modifications is not needed anymore).
 */
 
 // Import required libraries
