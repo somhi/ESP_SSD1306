@@ -19,8 +19,6 @@
 // Import required libraries
 #include <ESP_SSD1306.h>    // Modification of Adafruit_SSD1306 for ESP8266 compatibility
 #include <Adafruit_GFX.h>   // Needs a little change in original Adafruit library (See README.txt file)
-#include <SPI.h>            // For SPI comm (needed for not getting compile error)
-#include <Wire.h>           // For I2C comm, but needed for not getting compile error
 
 /*
 HardWare OLED ESP8266 I2C pins
@@ -126,7 +124,7 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(OLED_RESET); // FOR I2C
+ESP_SSD1306 display(false,OLED_RESET); // FOR I2C
 
 
 void setup(void)

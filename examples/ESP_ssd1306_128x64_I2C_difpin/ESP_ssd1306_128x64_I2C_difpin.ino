@@ -1,9 +1,9 @@
 /*
- ****** ESP_ssd1306_128x64_SPI demo display *********
+ ****** ESP_ssd1306_128x64_I2C demo display *********
  *
  * Demo for using ESP_SSD1306 library to communicate
  * a ssd1306 Display with the ESP8266 board
- * through hardware SPI communication
+ * through hardware I2C communication
  *
  *********** This code is for the ESP8266***********
  *
@@ -19,20 +19,12 @@
 // Import required libraries
 #include <ESP_SSD1306.h>    // Modification of Adafruit_SSD1306 for ESP8266 compatibility
 #include <Adafruit_GFX.h>   // Needs a little change in original Adafruit library (See README.txt file)
-#include <SPI.h>            // For SPI comm (needed for not getting compile error)
 
-/*HardWare Olimex ESP8266 SPI pins
-Pin 16,   GPIO12   MISO (DIN)
-Pin 17,   GPIO14   CLOCK          - D0 pin OLED display
-Pin 18,   GPIO13   MOSI (DOUT)    - D1 pin OLED display
-Pin 19,   GPIO15   CS / SS        -
+/*
+HardWare OLED ESP8266 I2C pins
+Pin 17,   GPIO14   SCL
+Pin 19,   GPIO15   SDA
 */
-
-// Pin definitions
-#define OLED_CS     15  // Pin 19, CS - Chip select
-#define OLED_DC     2   // Pin 20 - DC digital signal
-#define OLED_RESET  16  // Pin 15 -RESET digital signal
-
 
 // Display demo definitions
 #define NUMFLAKES 10
@@ -128,13 +120,13 @@ const unsigned char PROGMEM demo [] = {
 };
 
 
-ESP_SSD1306 display(true, OLED_DC, OLED_RESET, OLED_CS); // FOR SPI
+ESP_SSD1306 display(false,4,5); // FOR I2C
 
 
 void setup(void)
 {
-	// Start Serial
-	Serial.begin(115200);
+  // Start Serial
+  Serial.begin(115200);
 
   // SSD1306 Init
   display.begin(SSD1306_SWITCHCAPVCC);  // Switch OLED
@@ -447,3 +439,4 @@ void testscrolltext(void) {
   delay(2000);
   display.stopscroll();
 }
+

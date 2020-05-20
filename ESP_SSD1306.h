@@ -146,11 +146,19 @@ Otherwise comment the line   #define pgm_read_byte(addr)...
 
 class ESP_SSD1306 : public Adafruit_GFX  {
  public:
-  ESP_SSD1306(int8_t SID, int8_t SCLK, int8_t DC, int8_t RST, int8_t CS);
-  ESP_SSD1306(int8_t DC, int8_t RST, int8_t CS);	//Constructor for hardware SPI
-  ESP_SSD1306(int8_t RST);
+  // SPI settings
+  ESP_SSD1306(bool SPI, int8_t SID, int8_t SCLK, int8_t DC, int8_t CS, int8_t RST);
+  // SPI and I2C settings
+  // if SPI false DC is  SDA, CS is SCL and RST is reset pin
+  ESP_SSD1306(bool SPI, int8_t DC,int8_t CS,int8_t RST);
+  // I2C settings
+  ESP_SSD1306(bool SPI, int8_t SDA, int8_t SCL);
+  // I2C settings
+  ESP_SSD1306(bool SPI, int8_t RST);
+  // I2C settings
+  ESP_SSD1306(bool SPI = false);
 
-  void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS, bool reset=true);
+  void begin(uint8_t switchvcc = SSD1306_SWITCHCAPVCC, uint8_t i2caddr = SSD1306_I2C_ADDRESS);
   void ssd1306_command(uint8_t c);
   void ssd1306_data(uint8_t c);
 
@@ -173,7 +181,8 @@ class ESP_SSD1306 : public Adafruit_GFX  {
   virtual void drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
 
  private:
-  int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs;
+  boolean spi;
+  int8_t _i2caddr, _vccstate, sid, sclk, dc, rst, cs, sda, scl;
   void fastSPIwrite(uint8_t c);
 
   boolean hwSPI;
